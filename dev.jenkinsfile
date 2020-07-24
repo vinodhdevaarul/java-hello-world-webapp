@@ -57,7 +57,8 @@ pipeline {
                             print("Stage 2: Create webapp image ... Started")
                             
                             withDockerRegistry(credentialsId: 'DH-VDA-UP-ID') {
-                                bat label: 'create_webapp_image', script: 'docker image build -t ${dh_repo}:${BUILD_NUMBER} .'
+                                bat label: 'create_webapp_image', 
+                                    script: 'docker image build -t vinodhdevaarul/java-hello-world-webapp:%BUILD_NUMBER% .'
                             }
 
                             print("Stage 2: Create webapp image ... Succeeded")
