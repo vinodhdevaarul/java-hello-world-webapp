@@ -1,0 +1,55 @@
+/*------------------------------------------------------------------------------
+Purpose : Pipeline Code for 
+********************************************************************************
+* Date            Author       Version    Comments
+********************************************************************************
+* 01-Mar-2020     Vinodh C     1.0        New Version
+********************************************************************************
+------------------------------------------------------------------------------*/
+
+def getTimeLog() {
+    now = new Date()
+    stage_time = now.format("HH:mm:ss")
+    return stage_time
+}
+
+pipeline {
+  
+        agent any
+        
+    
+        stages {
+            stage('Process:Init') {
+                steps {
+                    script {
+                        stage_time = getTimeLog()
+                    
+                        def now = new Date()
+                        start_time = now.format("yyyy-MM-dd HH:mm:ss.S")
+                        
+                        try {
+                            echo "Process Initialization in progress ...."
+                            print("Stage 1: Init Process - SUCCEEDED" + "#LF#")
+
+                            withDockerRegistry(credentialsId: 'DH-VDA-UP-ID') {
+                                print("!!! I am inside !!!")               
+                            }
+                        } catch (Exception e) {
+                            status_flag = "FALSE"
+                            print("Stage 1: Init Process - FAILED" + "#LF#")
+                        }
+                        
+                        print("Start Time:" + stage_time + " <<>> End Time:" +  getTimeLog() + "#LF#")
+                    }
+                }
+            }
+        }
+        
+    post {
+        always {
+            script {
+                echo "Trigger Mail ..."
+            }    
+        }
+    }    
+}
