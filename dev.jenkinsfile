@@ -64,7 +64,7 @@ pipeline {
                             print("Stage 2: Create webapp image ... Succeeded")
 
                         } catch (Exception e) {
-                            print("Stage 2: Create webapp image ... Failed")
+                            print("Stage 2: Create webapp image ... Failed" + e.printStackTrace)
                         }
                         
                         print("Start Time:" + stage_time + " <<>> End Time:" +  getTimeLog())
