@@ -31,7 +31,7 @@ pipeline {
                             print("Stage 1: Build java-hello-world-webapp ... Started")
                             
                             withMaven(maven: 'apache-maven-3.6.3') {
-                                sh "mvn clean install"
+                                bat label: 'build_webapp', script: 'mvn clean install'
                             }
 
                             print("Stage 1: Build java-hello-world-webapp ... Succeeded")
