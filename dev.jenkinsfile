@@ -19,7 +19,7 @@ pipeline {
         
     
         stages {
-            stage('Process:Init') {
+            stage('Build:java-hello-world-webapp') {
                 steps {
                     script {
                         stage_time = getTimeLog()
@@ -28,27 +28,80 @@ pipeline {
                         start_time = now.format("yyyy-MM-dd HH:mm:ss.S")
                         
                         try {
-                            echo "Process Initialization in progress ...."
-                            print("Stage 1: Init Process - SUCCEEDED" + "#LF#")
-
-                            withDockerRegistry(credentialsId: 'DH-VDA-UP-ID') {
-                                print("!!! I am inside !!!")               
+                            print("Stage 1: Build java-hello-world-webapp ... Started")
+                            
+                            withMaven(maven: 'apache-maven-3.6.3') {
+                                sh "mvn clean install"
                             }
+
+                            print("Stage 1: Build java-hello-world-webapp ... Succeeded")
+
                         } catch (Exception e) {
-                            status_flag = "FALSE"
-                            print("Stage 1: Init Process - FAILED" + "#LF#")
+                            print("Stage 1: Build java-hello-world-webapp ... Failed")
                         }
                         
-                        print("Start Time:" + stage_time + " <<>> End Time:" +  getTimeLog() + "#LF#")
+                        print("Start Time:" + stage_time + " <<>> End Time:" +  getTimeLog())
+                    }
+                }
+            }
+
+            stage('Create:webapp-image') {
+                steps {
+                    script {
+                        stage_time = getTimeLog()
+                    
+                        def now = new Date()
+                        start_time = now.format("yyyy-MM-dd HH:mm:ss.S")
+                        
+                        try {
+                            print("Stage 2: Create webapp image ... Started")
+                            
+                            withDockerRegistry(credentialsId: 'DH-VDA-UP-ID') {
+                                bat label: 'create_webapp_image', script: 'docker image build -t ${dh_repo}:${BUILD_NUMBER} .'
+                            }
+
+                            print("Stage 2: Create webapp image ... Succeeded")
+
+                        } catch (Exception e) {
+                            print("Stage 2: Create webapp image ... Failed")
+                        }
+                        
+                        print("Start Time:" + stage_time + " <<>> End Time:" +  getTimeLog())
+                    }
+                }
+            }
+
+
+            stage('Push:webapp-to-docker-hub') {
+                steps {
+                    script {
+                        stage_time = getTimeLog()
+                    
+                        def now = new Date()
+                        start_time = now.format("yyyy-MM-dd HH:mm:ss.S")
+                        
+                        try {
+                            print("Stage 3: Push webapp to docker hub ... Started")
+                            
+                            withDockerRegistry(credentialsId: 'DH-VDA-UP-ID') {
+                                bat label: 'create_webapp_image', script: 'docker push ${dh_repo}:${BUILD_NUMBER}'
+                            }
+
+                            print("Stage 3: Push webapp to docker hub ... Succeeded")
+
+                        } catch (Exception e) {
+                            print("Stage 3: Push webapp to docker hub ... Failed")
+                        }
+                        
+                        print("Start Time:" + stage_time + " <<>> End Time:" +  getTimeLog())
                     }
                 }
             }
         }
-        
     post {
         always {
             script {
-                echo "Trigger Mail ..."
+                echo "End Process ..."
             }    
         }
     }    
