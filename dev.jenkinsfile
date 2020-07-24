@@ -85,7 +85,7 @@ pipeline {
                             print("Stage 3: Push webapp to docker hub ... Started")
                             
                             withDockerRegistry(credentialsId: 'DH-VDA-UP-ID') {
-                                bat label: 'create_webapp_image', script: 'docker push ${dh_repo}:${BUILD_NUMBER}'
+                                bat label: 'create_webapp_image', script: 'docker push vinodhdevaarul/java-hello-world-webapp:%BUILD_NUMBER%'
                             }
 
                             print("Stage 3: Push webapp to docker hub ... Succeeded")
