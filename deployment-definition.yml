@@ -9,7 +9,7 @@ spec:
       type: front-end
   template:
     metadata:
-	  name: hw-cicd-deploy-pod
+    name: hw-cicd-deploy-pod
       labels:
         trigger: from-jenkins
         type: front-end
