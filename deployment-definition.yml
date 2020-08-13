@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: my-cicd-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: front-end
+  template:
+    metadata:
+	  name: hw-cicd-deploy-pod
+      labels:
+        trigger: from-jenkins
+        type: front-end
+        tech: java-maven
+    spec:
+      containers:
+        - name: my-hw-ctr
+          image: vinodhdevaarul/java-hello-world-webapp
