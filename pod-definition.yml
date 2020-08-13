@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hw-cicd-Pod
+  name: hw-cicd-pod
   labels:
     trigger: from-jenkins
     type: front-end
