@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hw-cicd-Pod
+  labels:
+    trigger: from-jenkins
+    type: front-end
+    tech: java-maven
+spec:
+  containers:
+    - name: my-hw-ctr
+      image: vinodhdevaarul/java-hello-world-webapp
