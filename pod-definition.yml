@@ -9,4 +9,4 @@ metadata:
 spec:
   containers:
     - name: my-hw-ctr
-      image: vinodhdevaarul/java-hello-world-webapp
+      image: nginx
