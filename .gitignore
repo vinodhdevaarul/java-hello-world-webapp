@@ -1,1 +1,11 @@
 target/
+/webapps/
+/lib/
+/conf/
+/bin/
+/LICENSE
+/NOTICE
+/README.md
+/RELEASE-NOTES
+/RUNNING.txt
+/temp/
